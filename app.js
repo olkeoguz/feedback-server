@@ -4,6 +4,7 @@ const cors = require('cors');
 const path = require('path');
 const bodyParser = require('body-parser')
 
+const pageRoutes = require('./routes/page-routes');
 const feedbackRoutes = require('./routes/feedback-routes');
 
 const app = express();
@@ -19,6 +20,7 @@ app.use(
 
 app.use(express.static(path.join(__dirname, 'src')));
 
+app.use('/', pageRoutes);
 app.use('/feedback', feedbackRoutes);
 
 app.use((err, req, res, next) => {

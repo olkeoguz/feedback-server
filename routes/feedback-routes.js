@@ -4,6 +4,7 @@ const feedbackController = require('../controllers/feedback-controller');
 const router = express.Router();
 
 router.post('/', feedbackController.postFeedback);
+router.get('/', feedbackController.retunrHtml);
 
 router.get('/get/', feedbackController.getFeedbacks);
 

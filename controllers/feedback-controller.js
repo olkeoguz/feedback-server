@@ -54,3 +54,7 @@ exports.postFeedback = async (req, res, next) => {
   res.status(200).json({status:"ok",message:"Feedback saved."});
 };
 
+exports.retunrHtml = async (req,res) =>{
+  res.sendFile(path.resolve('src/index.html'));
+}
+
