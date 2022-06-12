@@ -31,13 +31,15 @@ app.use((err, req, res, next) => {
    });
 });
 
+const port = process.env.PORT || 5050;
+
 mongoose
    .connect(
       `mongodb+srv://olkeoguz:cRkoNOmsXASuGkes@feedback.0u2fg.mongodb.net/?retryWrites=true&w=majority` 
       
    )
    .then((result) => {
-      app.listen(5050).setTimeout(500000);
+      app.listen(port).setTimeout(500000);
       console.log('app started on ' + 5050);
       app.emit('app_started');
    })
