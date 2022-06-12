@@ -2,14 +2,13 @@ const Feedback = require('../models/mongoose/feedback');
 const Userkey = require('../models/mongoose/userkey');
 const path = require("path")
 
-exports.getFeedbacks = async (req, res, next) => {
-  console.log('foo')
+exports.getFeedbacks = async (req, res) => {
   const username = req.query.userkey;
 
   const user = await Userkey.findOne({userKey: username });
 
   if(!user){
-    res.status(401).json({message:"User not found."})
+    res.status(404).json({message:"User not found."})
     return
   }
 
@@ -18,36 +17,45 @@ exports.getFeedbacks = async (req, res, next) => {
   res.json({feedbacks: feedbacks})
 };
 
-exports.postFeedback = async (req, res, next) => {
+exports.postFeedback = async (req, res) => {
 
-  if(!req.body.userkey){
-    res.status(401).json({message:"Please enter a userkey"})
-    return
+  const enteredUserKey = req.body.userkey;
+  const enteredContent = req.body.content;
+
+  if(!enteredUserKey){
+    return res.status(401).json({message:"User key is required."})
   }
 
-  const userkeyInfo = await Userkey.findOne({ userKey: req.body.userkey });
-  console.log('isUserExist :>> ', userkeyInfo);
+  if(!enteredContent){
+    return res.status(401).json({message:"Content is required."})
+  }
+
+  if(enteredContent.length >2000) {
+    return res.status(401).json({message:"Maximum length should be 2000."})
+  }
+
+
+  const savedUserKey = await Userkey.findOne({ userKey: enteredUserKey });
   let userkeyId = null;
-  if (!userkeyInfo) {
-    const createUserkey = await Userkey.bulkWrite([
+  if (!savedUserKey) {
+    const newUserKey = await Userkey.bulkWrite([
       {
         insertOne: {
-          document: { userKey: req.body.userkey },
+          document: { userKey: enteredUserKey },
         },
       },
     ]);
 
-    userkeyId = createUserkey.result.insertedIds[0]._id;
-    console.log('createdUserkey :>> ', createUserkey, createUserkey.result.insertedIds[0]._id);
+    userkeyId = newUserKey.result.insertedIds[0]._id;
   }
   else{
-    userkeyId = userkeyInfo._id
+    userkeyId = savedUserKey._id
   }
 
   await Feedback.bulkWrite([
     {
       insertOne: {
-        document: { content: req.body.content,userKey:userkeyId },
+        document: { content: enteredContent,userKey:userkeyId },
       },
     },
   ]);
