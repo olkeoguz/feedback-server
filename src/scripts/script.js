@@ -1,12 +1,12 @@
 const root = document.getElementById('root');
 
-let params = new URL(document.location).searchParams;
-let userkey = params.get('userkey');
+const params = new URL(document.location).searchParams;
+const userkey = params.get('userkey');
 
 let feedbacks;
 
 const getFeedbacks = async () => {
-  const res = await fetch(`http://localhost:5050/feedback/get?userkey=${userkey}`);
+  const res = await fetch(`/feedback/get?userkey=${userkey}`);
   const data = await res.json();
   feedbacks = data;
 };
