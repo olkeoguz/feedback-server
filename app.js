@@ -36,7 +36,7 @@ mongoose
    )
    .then((result) => {
       app.listen(5050).setTimeout(500000);
-      console.log('app started ON' + 5050);
+      console.log('app started on ' + 5050);
       app.emit('app_started');
    })
    .catch((err) => {
