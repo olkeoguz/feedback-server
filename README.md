@@ -36,6 +36,24 @@ npm start | yarn start
 
 to start the development mode.
 
+## Endpoints
+
+/feedback --POST
+
+- Takes the body object consisting of userkey and the actual content(feedback)
+- Goes to db and tries to find the document with the user key
+
+    1- If user key exists, adds the content to the feedbacks with that user key,
+
+    2- If not, creates the user key and adds the content (feedback) to it
+
+--- 
+/feedback -- GET
+
+* Takes the user key as query parameter
+* Serves the index.html
+* script.js runs and fetches the feedbacks from the same endpoint and creates the html table.
+
 
 
 
